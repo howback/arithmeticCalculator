@@ -1,10 +1,11 @@
 import java.util.Stack;
 
 public class Calculator {
-    public double decide(String verifiedString) {
+    public double calculate(String verifiedString) {
         String rpn = expressionToRPN(verifiedString);
         return rpnToAnswer(rpn);
     }
+
     public int amountOfNumbers(String expression) {
         int amount = 0;
         for (int i = 1; i < expression.length(); i++) {
@@ -15,6 +16,7 @@ public class Calculator {
         if (getPriority(expression.charAt(expression.length() - 1)) == 0) amount += 1;
         return amount;
     }
+
     private String expressionToRPN(String expr) {
         String current = "";
         Stack<Character> stack = new Stack<>();
@@ -44,6 +46,7 @@ public class Calculator {
         while (!stack.empty()) current += stack.pop();
         return current;
     }
+
     private double rpnToAnswer(String rpn) {
         String operand = "";
         Stack<Double> stack = new Stack<>();
@@ -71,9 +74,10 @@ public class Calculator {
             }
         }
         return stack.pop();
-}
+    }
+
     //set priorities for characters (*,/)=3 (+,-)=2  '('=1  ')'=-1  (0-9)=0
-     static int getPriority(char token) {
+    public static int getPriority(char token) {
         if (token == '*' || token == '/') {
             return 3;
         } else if (token == '+' || token == '-') {

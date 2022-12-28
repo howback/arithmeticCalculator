@@ -5,37 +5,38 @@ import java.util.regex.Pattern;
 
 public class Verifier {
 
-    public void verification(String expression){
+    public void verification(String expression) {
         Pattern pattern = Pattern.compile("^((\\d*\\.?\\d*)([+-/*()]))*(\\d*\\.?\\d*)$");
         Matcher matcher = pattern.matcher(expression);
-        if(matcher.matches()) {
-            String verifiedString = examination(expression);
+        if (matcher.matches()) {
+            String transformedString = transformToSimplifiedNotation(expression);
             checkBrackets(expression);
-            if (!examination(expression).equals(expression)) {
-                System.out.println("Simplified expression = " + examination(expression));
+            if (!transformedString.equals(expression)) {
+                System.out.println("Simplified expression = " + transformedString);
             }
-            System.out.println("Answer = " + new Calculator().decide(verifiedString));
+            System.out.println("Answer = " + new Calculator().calculate(transformedString));
             System.out.println("Amount of numbers in expression = " + new Calculator().amountOfNumbers(expression));
-        } else System.err.println("Input Error. Valid characters: 0-9 and the following characters: + - / * ( ) .");
+        } else
+            System.err.println("Input Error. Valid characters: 0-9 and the following characters: + - / * ( ) .");
     }
-    void throwsAnError(String error){
-        if(error.equals("sings")){
+
+    public void throwsAnError(String error) {
+        if (error.equals("sings")) {
             System.err.println("Input Error arithmetic sings");
             System.exit(1);
         }
-        if(error.equals("brackets")){
+        if (error.equals("brackets")) {
             System.err.println("incorrect placement of arithmetic brackets!");
             System.exit(1);
         }
-        if(error.equals("start")){
+        if (error.equals("start")) {
             System.err.println("Input Error, the expression must start with a digit, a minus sign, or an opening arithmetic bracket");
             System.exit(1);
         }
-        if(error.equals("byZero")){
+        if (error.equals("byZero")) {
             System.err.println("divide by zero is not allowed!");
             System.exit(1);
         }
-
     }
 
     private void checkBrackets(String expression) {
@@ -73,7 +74,7 @@ public class Verifier {
         }
     }
 
-    private String examination(String expression) {
+    private String transformToSimplifiedNotation(String expression) {
         String transformedExpression = "";
         List<Character> list = new ArrayList<>();
         for (int i = 0; i < expression.length(); i++) {
@@ -85,12 +86,12 @@ public class Verifier {
                 else if (list.get(i - 1) == '*' || list.get(i - 1) == '/') {
                     list.add(i, '0');
                     list.add(i, '(');
-                    int s = 3 + i;
-                    while (Calculator.getPriority(list.get(s)) == 0) {
-                        s = s + 1;
-                        if (s == list.size()) list.add(')');
+                    int closingBracketPosition = 3 + i;
+                    while (Calculator.getPriority(list.get(closingBracketPosition)) == 0) {
+                        closingBracketPosition = closingBracketPosition + 1;
+                        if (closingBracketPosition == list.size()) list.add(')');
                     }
-                    if (s != list.size() - 1) list.add(s, ')');
+                    if (closingBracketPosition != list.size() - 1) list.add(closingBracketPosition, ')');
                 }
             }
         }
