@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class Verifier {
 
     public void verification(String expression){
-        Pattern pattern = Pattern.compile("^((\\d*\\.?\\d*)([+-/*]))*(\\d*\\.?\\d*)$");
+        Pattern pattern = Pattern.compile("^((\\d*\\.?\\d*)([+-/*()]))*(\\d*\\.?\\d*)$");
         Matcher matcher = pattern.matcher(expression);
         if(matcher.matches()) {
             String verifiedString = examination(expression);
